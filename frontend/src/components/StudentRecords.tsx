@@ -29,7 +29,7 @@ const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
 const [loading, setLoading] = useState(true)
 const [error, setError] = useState('')
   useEffect(() => {
-    fetch('http://localhost:5000/api/students')
+    fetch(`${import.meta.env.VITE_API_URL}/students`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch student records')

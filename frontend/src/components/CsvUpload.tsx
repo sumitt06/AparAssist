@@ -144,8 +144,8 @@ const [saveSummary, setSaveSummary] = useState('')
     .map(record => record.apaarId)
 
   const response = await fetch(
-    'http://localhost:5000/api/students/check',
-    {
+  `${import.meta.env.VITE_API_URL}/students/check`,
+  {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -213,7 +213,7 @@ const [saveSummary, setSaveSummary] = useState('')
   try {
     for (const record of validRecords) {
       try {
-        const response = await fetch('http://localhost:5000/api/students', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/students`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
