@@ -1,4 +1,4 @@
-
+import { apiFetch } from '../utils/api'
 import { useEffect, useState } from 'react'
 import {
   Search,
@@ -29,7 +29,7 @@ const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
 const [loading, setLoading] = useState(true)
 const [error, setError] = useState('')
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/students`)
+    apiFetch('/students')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch student records')

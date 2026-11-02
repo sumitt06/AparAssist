@@ -1,4 +1,4 @@
-
+import { apiFetch } from '../utils/api'
 import { useState } from 'react'
 import {
   Upload,
@@ -143,8 +143,8 @@ const [saveSummary, setSaveSummary] = useState('')
     .filter(record => record.status === 'Valid')
     .map(record => record.apaarId)
 
-  const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/students/check`,
+  const response = await apiFetch(
+  '/students/check',
   {
       method: 'POST',
       headers: {
@@ -213,7 +213,7 @@ const [saveSummary, setSaveSummary] = useState('')
   try {
     for (const record of validRecords) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/students`, {
+        const response = await apiFetch('/students', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
