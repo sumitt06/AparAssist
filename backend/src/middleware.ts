@@ -10,7 +10,7 @@ if (!JWT_SECRET) {
 export interface AuthRequest extends Request {
     user?: {
         id: number;
-        role: 'INSTITUTION_ADMIN' | 'AICTE_ADMIN';
+        role: 'INSTITUTION_ADMIN' | 'AICTE_ADMIN' | 'AICTE_DEMO';
         institution_id: number | null;
     };
 }
@@ -37,7 +37,7 @@ export const authenticateToken = (
         if (
             !decoded ||
             typeof decoded.id !== 'number' ||
-            !['INSTITUTION_ADMIN', 'AICTE_ADMIN'].includes(decoded.role)
+            !['INSTITUTION_ADMIN', 'AICTE_ADMIN', 'AICTE_DEMO'].includes(decoded.role)
         ) {
             return res.status(401).json({
                 success: false,
@@ -56,7 +56,7 @@ export const authenticateToken = (
     }
 };
 
-export const authorizeRoles = (...roles: Array<'INSTITUTION_ADMIN' | 'AICTE_ADMIN'>) => {
+export const authorizeRoles = (...roles: Array<'INSTITUTION_ADMIN' | 'AICTE_ADMIN' | 'AICTE_DEMO'>) => {
     return (req: AuthRequest, res: Response, next: NextFunction) => {
         if (!req.user || !roles.includes(req.user.role)) {
             return res.status(403).json({

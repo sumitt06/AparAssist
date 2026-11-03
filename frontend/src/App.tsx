@@ -1,3 +1,7 @@
+import AICTEDashboard from "./components/aicte/AICTEDashboard";
+import InstitutionManagement from "./components/aicte/InstitutionManagement";
+import StudentMonitoring from "./components/aicte/StudentMonitoring";
+import APAARDuplicateMonitoring from "./components/aicte/APAARDuplicateMonitoring";
 import PortalSelection from "./components/PortalSelection";
 import CsvUpload from "./components/CsvUpload";
 import StudentRecords from "./components/StudentRecords";
@@ -138,38 +142,66 @@ function App() {
     );
   }
 
-  if (user.role === "AICTE_ADMIN") {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-        <div className="w-full max-w-lg rounded-2xl bg-white p-10 text-center shadow-lg">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 text-3xl">
-            🚧
-          </div>
+  if (user.role === "AICTE_ADMIN" || user.role === "AICTE_DEMO") {
+  const aicteNavigation = [
+  "Overview",
+  "Institutions",
+  "Student Monitoring",
+  "APAAR Monitoring",
+];
 
-          <h1 className="text-2xl font-bold text-slate-900">AICTE Dashboard</h1>
-
-          <p className="mt-3 text-slate-500">Work in Progress</p>
-
-          <p className="mt-2 text-sm text-slate-400">
-            The AICTE Super Admin Dashboard is currently under development.
-            Please check back soon.
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-8">
+        <div>
+          <h1 className="text-xl font-bold text-slate-900">
+            AparAssist
+          </h1>
+          <p className="text-xs text-slate-500">
+            AICTE Administration Portal
           </p>
-
-          <button
-            onClick={() => {
-              sessionStorage.removeItem("aparassist_token");
-              sessionStorage.removeItem("aparassist_user");
-              setUser(null);
-              setSelectedPortal(null);
-            }}
-            className="mt-8 rounded-lg bg-indigo-700 px-6 py-3 font-semibold text-white hover:bg-indigo-800"
-          >
-            Logout
-          </button>
         </div>
+
+        <button
+          onClick={handleLogout}
+          className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </header>
+
+      <div className="border-b border-slate-200 bg-white px-5 sm:px-8">
+        <nav className="flex gap-6">
+          {aicteNavigation.map((item) => (
+            <button
+              key={item}
+              onClick={() => setActivePage(item)}
+              className={`border-b-2 px-2 py-4 text-sm font-semibold ${
+                activePage === item
+                  ? "border-blue-600 text-blue-700"
+                  : "border-transparent text-slate-500 hover:text-slate-900"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </nav>
       </div>
-    );
-  }
+
+      <main className="p-5 sm:p-8">
+        {activePage === "Institutions" ? (
+  <InstitutionManagement />
+) : activePage === "Student Monitoring" ? (
+  <StudentMonitoring />
+) : activePage === "APAAR Monitoring" ? (
+  <APAARDuplicateMonitoring />
+) : (
+  <AICTEDashboard />
+)}
+      </main>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">

@@ -11,7 +11,7 @@ router.get('/students', async (req: AuthRequest, res) => {
     try {
         let result;
 
-        if (req.user?.role === 'AICTE_ADMIN') {
+        if ((req.user?.role === 'AICTE_ADMIN' || req.user?.role === 'AICTE_DEMO')) {
             result = await pool.query(
                 'SELECT * FROM students ORDER BY id DESC'
             );
@@ -50,7 +50,7 @@ router.post('/students/check', async (req: AuthRequest, res) => {
 
         let result;
 
-        if (req.user?.role === 'AICTE_ADMIN') {
+        if ((req.user?.role === 'AICTE_ADMIN' || req.user?.role === 'AICTE_DEMO')) {
             result = await pool.query(
                 'SELECT apaar_id FROM students WHERE apaar_id = ANY($1)',
                 [apaar_ids]
@@ -119,7 +119,7 @@ router.post('/students', async (req: AuthRequest, res) => {
             }
 
             institutionId = req.user.institution_id;
-        } else if (req.user?.role === 'AICTE_ADMIN') {
+        } else if ((req.user?.role === 'AICTE_ADMIN' || req.user?.role === 'AICTE_DEMO')) {
             if (!req.body.institution_id) {
                 return res.status(400).json({
                     success: false,
@@ -221,7 +221,7 @@ router.put('/students/:id', async (req: AuthRequest, res) => {
 
         let result;
 
-        if (req.user?.role === 'AICTE_ADMIN') {
+        if ((req.user?.role === 'AICTE_ADMIN' || req.user?.role === 'AICTE_DEMO')) {
             result = await pool.query(
                 `UPDATE students
                  SET student_name = $1,
@@ -305,7 +305,7 @@ router.delete('/students/:id', async (req: AuthRequest, res) => {
 
         let result;
 
-        if (req.user?.role === 'AICTE_ADMIN') {
+        if ((req.user?.role === 'AICTE_ADMIN' || req.user?.role === 'AICTE_DEMO')) {
             result = await pool.query(
                 'DELETE FROM students WHERE id = $1 RETURNING id',
                 [studentId]

@@ -5,7 +5,7 @@ import { apiFetch } from '../utils/api'
 
 export type AuthUser = {
   id: number
-  role: 'INSTITUTION_ADMIN' | 'AICTE_ADMIN'
+  role: 'INSTITUTION_ADMIN' | 'AICTE_ADMIN' | 'AICTE_DEMO'
   institution_id: number | null
 }
 
@@ -46,10 +46,13 @@ const demoPassword = 'AparDemo@2026'
       if (!data.token || !data.user) {
         throw new Error('Invalid server response')
       }
-      const expectedRole =
-  portal === 'institution' ? 'INSTITUTION_ADMIN' : 'AICTE_ADMIN'
+      const isAuthorized =
+  portal === 'institution'
+    ? data.user.role === 'INSTITUTION_ADMIN'
+    : data.user.role === 'AICTE_ADMIN' ||
+      data.user.role === 'AICTE_DEMO'
 
-if (data.user.role !== expectedRole) {
+if (!isAuthorized) {
   throw new Error(
     `This account is not authorized for the ${portal === 'institution' ? 'Institution' : 'AICTE'} Portal.`
   )
@@ -208,13 +211,52 @@ if (data.user.role !== expectedRole) {
               {demoPassword}
             </p>
           </div>
+          {/* ADD BUTTON HERE */}
+    <button
+      type="button"
+      onClick={() => {
+        setEmail(demoEmail);
+        setPassword(demoPassword);
+        setShowDemo(false);
+      }}
+      className="mt-4 w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
+    >
+      Use Demo Credentials
+    </button>
         </>
       ) : (
-        <p className="mt-3 text-sm text-slate-600">
-          A separate AICTE demo account has not been configured yet.
-          Please use an authorized AICTE account.
-        </p>
-      )}
+  <>
+    <p className="mt-2 text-sm text-slate-500">
+      Use these credentials to access the AICTE Demo Portal.
+    </p>
+
+    <div className="mt-5 space-y-3 rounded-lg bg-slate-50 p-4 text-sm text-left">
+      <p>
+        <strong>User ID:</strong>
+        <br />
+        aicte.demo@aparassist.in
+      </p>
+
+      <p>
+        <strong>Password:</strong>
+        <br />
+        AparDemo@2026
+      </p>
+    </div>
+
+    <button
+      type="button"
+      onClick={() => {
+        setEmail('aicte.demo@aparassist.in');
+        setPassword('AparDemo@2026');
+        setShowDemo(false);
+      }}
+      className="mt-4 w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
+    >
+      Use Demo Credentials
+    </button>
+  </>
+)}
 
       <button
         type="button"
