@@ -4,6 +4,8 @@ import StudentMonitoring from "./components/aicte/StudentMonitoring";
 import APAARDuplicateMonitoring from "./components/aicte/APAARDuplicateMonitoring";
 import PortalSelection from "./components/PortalSelection";
 import CsvUpload from "./components/CsvUpload";
+import DuplicateReview from "./components/DuplicateReview";
+import IntakeMonitoring from "./components/IntakeMonitoring";
 import StudentRecords from "./components/StudentRecords";
 import { useState, useEffect } from "react";
 import Login, { type AuthUser } from "./components/Login";
@@ -31,8 +33,7 @@ import {
 const navigation = [
   { name: "Overview", icon: LayoutDashboard },
   { name: "Student Records", icon: Users },
-  { name: "CSV Upload", icon: Upload },
-  { name: "Validation", icon: ShieldCheck },
+  { name: "CSV Upload & Validation", icon: Upload },
   { name: "Duplicate Review", icon: AlertTriangle },
   { name: "Intake Monitoring", icon: ChartNoAxesCombined },
   { name: "Institutions", icon: Building2 },
@@ -338,7 +339,7 @@ function App() {
             </div>
 
             <button
-              onClick={() => setActivePage("CSV Upload")}
+              onClick={() => setActivePage("CSV Upload & Validation")}
               className="flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-800"
             >
               <Upload size={17} />
@@ -373,8 +374,12 @@ function App() {
             </div>
           ) : activePage === "Student Records" ? (
             <StudentRecords />
-          ) : activePage === "CSV Upload" ? (
+          ) : activePage === "CSV Upload & Validation" ? (
             <CsvUpload />
+          ) : activePage === "Duplicate Review" ? (
+            <DuplicateReview />
+          ) : activePage === "Intake Monitoring" ? (
+            <IntakeMonitoring />
           ) : (
             <>
               {/* Demo Notice */}
